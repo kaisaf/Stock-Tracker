@@ -22,7 +22,6 @@ class HomeView(View):
         frm_variation = request.POST["variation"]
         new_stock = UserStock(user=request.user, symbol=frm_symbol, variation=frm_variation, variation_type=frm_variation_type)
         new_stock.save()
-        print(new_stock)
         return redirect("home")
 
 class SignUpView(View):
