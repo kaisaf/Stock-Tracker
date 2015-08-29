@@ -1,5 +1,55 @@
 {% extends "stock_app/base.html" %}
 
 {% block menu_button %}
+  <li><a href="#">{{username}}</a></li>
   <li><a href="/logout">Logout</a></li>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <form class="form-inline" method="POST" id="form_add_stock">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="symbol">Symbol</label>
+        <input type="text" class="form-control" id="symbol" name="symbol" placeholder="AAPL">
+      </div>
+
+      <div class="form-group">
+        <label for="variation_type">Type</label>
+        <select class="form-control" id="variation_type" name="variation_type">
+          <option value="PCT">Percentage</option>
+          <option value="PR">Price</option>
+          <option value="VOL">Volume</option>
+          <option value="STD">Standard Deviation</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="variation">Variation</label>
+        <input type="number" step="0.001" class="form-control" id="variation" name="variation" placeholder="6.66">
+      </div>
+      <button type="submit" class="btn btn-default">Add</button>
+    </form>
+  </div>
+
+
+
+  <div class="container">
+
+    <table class="table table-striped">
+      <tr>
+        <th>Symbol</th>
+        <th>Type</th>
+        <th>Variation</th>
+      </tr>
+      {% for stock in stocks %}
+        <tr>
+          <td>{{ stock.symbol }}</td>
+          <td> {{ stock.variation_type}}</td>
+          <td> {{ stock.variation }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  </div>
 {% endblock %}
