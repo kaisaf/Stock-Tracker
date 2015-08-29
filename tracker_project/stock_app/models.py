@@ -61,7 +61,9 @@ class UserStock(models.Model):
 from stock_app.models import UserStock
 from django.contrib.auth.models import User
 
-s = UserStock.objects.first()
+k = User.objects.get(username="kaisa")
+
+s = UserStock.objects.filter(user=k)
 data = s.check_alert()
 
 """

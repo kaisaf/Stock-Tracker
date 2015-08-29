@@ -43,7 +43,11 @@
         <th>Variation</th>
       </tr>
       {% for stock in stocks %}
-        <tr>
+        {% if stock.alerts %}
+          <tr class="danger">
+        {% else %}
+          <tr>
+        {% endif %}
           <td>{{ stock.symbol }}</td>
           <td> {{ stock.variation_type}}</td>
           <td> {{ stock.variation }}</td>

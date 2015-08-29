@@ -14,7 +14,19 @@ class HomeView(View):
     def get(self, request):
         context = {"username": request.user.username}
         stocks = UserStock.objects.filter(user=request.user)
-        context["stocks"] = stocks
+        stocks_table = []
+        for stock in stocks:
+            alert = stock.check_alert()
+            tmp = {
+                "id": stock.id,
+                "symbol": stock.symbol,
+                "variation_type": stock.variation_type,
+                "variation": stock.variation,
+                "alerts": alert
+            }
+            stocks_table.append(tmp)
+        print(stocks_table)
+        context["stocks"] = stocks_table
         return render(request, "stock_app/home.html", context)
     def post(self, request):
         frm_symbol = request.POST["symbol"]
