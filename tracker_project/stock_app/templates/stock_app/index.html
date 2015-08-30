@@ -1,0 +1,56 @@
+{% extends "stock_app/base.html" %}
+
+{% block menu_button %}
+  <li><a href="signup">Signup</a></li>
+  <li><a href="signin">Signin</a></li>
+{% endblock %}
+
+{% block content %}
+  <div class="jumbotron">
+    <h1>Welcome to the Stock Tracker</h1>
+    <p>Sign in if you already have account, otherwise please sign up</p>
+    <!-- <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p> -->
+  </div>
+
+  <div class="row">
+
+  <div class="col-sm-6 col-md-4 ad">
+    <div class="thumbnail">
+      <a href="http://finance.yahoo.com/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Yahoo_Finance_Logo_2013.png" alt="Yahoo Finance">
+      </a>
+      <div class="caption">
+        <h3>Yahoo Finance</h3>
+        <p>Yahoo Inc. (styled as Yahoo!) is an American multinational technology company headquartered in Sunnyvale, California.</p>
+        <!-- <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-4 ad">
+    <div class="thumbnail">
+      <a href="https://www.nyse.com/index">
+        <img src="https://www.nyse.com/publicdocs/cmsdata/ice/images/Logo_Header_NYSE_Small.png" alt="New York Stock Exchange">
+      </a>
+      <div class="caption">
+        <h3>NYSE</h3>
+        <p>The New York Stock Exchange (NYSE) is the world's largest stock exchange by market capitalization</p>
+        <!-- <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-4 ad">
+    <div class="thumbnail">
+      <a href="http://www.nasdaq.com/">
+        <img src="http://www.nasdaqomx.com/digitalAssets/95/95103_nasdaq_logo_165.png" alt="Nasdaq">
+      </a>
+      <div class="caption">
+        <h3>NASDAQ</h3>
+        <p>The NASDAQ Stock Market is an American/Canadian stock exchange. It is the second-largest exchange in the world by market capitalization</p>
+        <!-- <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
