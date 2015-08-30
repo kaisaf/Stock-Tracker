@@ -16,18 +16,18 @@ class HomeView(View):
         stocks = UserStock.objects.filter(user=request.user)
         stocks_table = []
         for stock in stocks:
-            alert = stock.check_alert()
+            stock_data = stock.get_info()
             tmp = {
                 "id": stock.id,
                 "symbol": stock.symbol,
                 "variation_type": stock.variation_type,
                 "variation": stock.variation,
-                "alerts": alert
+                "alerts": stock_data["alerts"]
             }
             stocks_table.append(tmp)
-        print(stocks_table)
         context["stocks"] = stocks_table
         return render(request, "stock_app/home.html", context)
+
     def post(self, request):
         frm_symbol = request.POST["symbol"]
         frm_variation_type = request.POST["variation_type"]
@@ -42,6 +42,7 @@ class SignUpView(View):
             print("cant signup again and going home")
             return redirect("home")
         return render(request, "stock_app/signup.html")
+
     def post(self, request):
         print(request.POST)
         frm_username = request.POST["username"]
@@ -58,6 +59,7 @@ class SignInView(View):
             print("cant sign in again and going home")
             return redirect("home")
         return render(request, "stock_app/signin.html")
+        
     def post(self, request):
         frm_username = request.POST["username"]
         frm_password = request.POST["password"]
