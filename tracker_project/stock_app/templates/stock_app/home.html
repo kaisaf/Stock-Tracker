@@ -36,7 +36,7 @@
 
 
   <div class="container">
-
+    {% csrf_token %}
     <table class="table table-striped">
       <tr>
         <th>Symbol</th>
@@ -59,6 +59,6 @@
   </div>
 
   <div class="container">
-    <img src="{% static "" %}stock_app/{{username}}.png" height="500px" />
+    <img src="{% static "" %}stock_app/images/{{username}}.png" height="500px" />
   </div>
 {% endblock %}
