@@ -8,8 +8,8 @@ background. User can set new trackers on top of the view by typing in the symbol
 the stock, selecting percentage or dollar from the dropdown menu and finally typing in the
 desired change without percentage/dollar signs.
 
-How to use Step-by-Step:
-========================
+# How to use Step-by-Step:
+
 * Inside Stock-Tracker create virtual environment:
   - $virtualenv -p python3 env
   - $source env/bin/activate
@@ -23,6 +23,6 @@ How to use Step-by-Step:
   - Go to your browser and start playing around!
 
 
-Developers:
+### Developers:
 * Kaisa Filppula
 * Victor Menezes

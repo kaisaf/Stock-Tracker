@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#static files images
+static/stock_app/images
+
+#db
+*.sqlite3
