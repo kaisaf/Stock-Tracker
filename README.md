@@ -2,8 +2,8 @@
 
 This is a Stock Tracker application that allows users to create an account, sign in and
 track short term stock price changes based on percentage or dollar change. Once signed in,
-the user is directed to their home page that displays all the trackers she/he set. If any of the
-percentage/dollar change thresholds are met, that particular tracker is highlighted with red
+the user is directed to their home page that displays all the trackers they set. If any of the
+percentage/dollar change thresholds is met, that particular tracker is highlighted with red
 background. User can set new trackers on top of the view by typing in the symbol/ticker of
 the stock, selecting percentage or dollar from the dropdown menu and finally typing in the
 desired change without percentage/dollar signs.
