@@ -3,8 +3,8 @@ from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserStock
+import matplotlib.pyplot as plt
 
-# Create your views here.
 
 class IndexView(View):
     def get(self, request):
@@ -15,8 +15,12 @@ class HomeView(View):
         context = {"username": request.user.username}
         stocks = UserStock.objects.filter(user=request.user)
         stocks_table = []
+        symbols = []
+        fig = plt.figure()
         for stock in stocks:
             stock_data = stock.get_info()
+            plt.plot(stock_data["prices"])
+            symbols.append(stock.symbol)
             tmp = {
                 "id": stock.id,
                 "symbol": stock.symbol,
@@ -26,6 +30,9 @@ class HomeView(View):
             }
             stocks_table.append(tmp)
         context["stocks"] = stocks_table
+        filename = "stock_app/static/stock_app/{}".format(request.user.username)
+        plt.legend(symbols)
+        fig.savefig(filename)
         return render(request, "stock_app/home.html", context)
 
     def post(self, request):
