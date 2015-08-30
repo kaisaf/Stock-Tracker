@@ -1,0 +1,4 @@
+.navbar-default .navbar-header a.navbar-brand:hover, .navbar-default .navbar-header a.navbar-brand:focus {
+   background-color: #777;
+   color: #e7e7e7 ;
+}

@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 
 class IndexView(View):
     def get(self, request):
+        if request.user.is_authenticated():
+            return redirect("home")
         return render(request, "stock_app/index.html")
 
 class HomeView(View):
@@ -46,12 +48,10 @@ class HomeView(View):
 class SignUpView(View):
     def get(self, request):
         if request.user.is_authenticated():
-            print("cant signup again and going home")
             return redirect("home")
         return render(request, "stock_app/signup.html")
 
     def post(self, request):
-        print(request.POST)
         frm_username = request.POST["username"]
         frm_email = request.POST["email"]
         frm_password = request.POST["password"]
@@ -63,10 +63,9 @@ class SignUpView(View):
 class SignInView(View):
     def get(self, request):
         if request.user.is_authenticated():
-            print("cant sign in again and going home")
             return redirect("home")
         return render(request, "stock_app/signin.html")
-        
+
     def post(self, request):
         frm_username = request.POST["username"]
         frm_password = request.POST["password"]
@@ -76,6 +75,5 @@ class SignInView(View):
 
 class LogoutView(View):
     def get(self, request):
-        print("logging out")
         logout(request)
         return redirect("index")
