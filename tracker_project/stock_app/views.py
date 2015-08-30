@@ -32,7 +32,7 @@ class HomeView(View):
             }
             stocks_table.append(tmp)
         context["stocks"] = stocks_table
-        filename = "stock_app/static/stock_app/{}".format(request.user.username)
+        filename = "stock_app/static/stock_app/images/{}".format(request.user.username)
         plt.legend(symbols)
         fig.savefig(filename)
         return render(request, "stock_app/home.html", context)
