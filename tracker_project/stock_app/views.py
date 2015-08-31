@@ -59,11 +59,11 @@ class SignUpView(View):
 
     def post(self, request):
         frm_username = request.POST["username"]
+        if User.objects.get(username=frm_username):
+            context = {"error_message": "Username must be unique"}
+            return render(request, "stock_app/signup.html", context)
         frm_email = request.POST["email"]
         frm_password = request.POST["password"]
-        if frm_username == "" or frm_password == "":
-            context = {"error_message": "Username and Password are mandatory fields"}
-            return render(request, "stock_app/signup.html", context)
         user = User.objects.create_user(username=frm_username, email=frm_email, password=frm_password)
         user = authenticate(username=frm_username, password=frm_password)
         login(request, user)
@@ -79,12 +79,8 @@ class SignInView(View):
         frm_username = request.POST["username"]
         frm_password = request.POST["password"]
         user = authenticate(username=frm_username, password=frm_password)
-        if user:
-            login(request, user)
-            return redirect("home")
-        else:
-            context = {"error_message": "Wrong username or password"}
-            return render(request, "stock_app/signin.html", context)
+        login(request, user)
+        return redirect("home")
 
 class LogoutView(View):
     def get(self, request):
