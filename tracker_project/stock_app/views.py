@@ -44,12 +44,25 @@ class HomeView(View):
         frm_symbol = request.POST["symbol"]
         frm_variation_type = request.POST["variation_type"]
         frm_variation = request.POST["variation"]
-        new_stock = UserStock(user=request.user, symbol=frm_symbol, variation=frm_variation, variation_type=frm_variation_type)
-        if not new_stock.get_min_by_min_data():
-            messages.add_message(request, messages.ERROR, 'Symbol not valid')
-        else:
+        frm_minutes = request.POST["minutes"]
+        if self.validate_stock_symbol(frm_symbol):
+            stock = Stock.objects.filter(symbol=frm_symbol).first()
+            if not stock:
+                stock = Stock(symbol=frm_symbol)
+                stock.refresh_yahoo_api_data()
+                stock.refresh_yahoo_intraday_data()
+                stock.save()
+            new_stock = UserStock(user=request.user, stock=stock, variation=frm_variation, variation_type=frm_variation_type, minutes=frm_minutes)
             new_stock.save()
+        else:
+            messages.add_message(request, messages.ERROR, 'Symbol not valid')
         return redirect("home")
+
+    def validate_stock_symbol(self, symbol):
+        share = yahoo_finance.Share(symbol)
+        if len(share.get_info()) > 1:
+            return True
+        return False
 
 class SignUpView(View):
     def get(self, request):

@@ -13,8 +13,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Stock',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
-                ('symbol', models.CharField(max_length=10, unique=True)),
+                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('symbol', models.CharField(unique=True, max_length=10)),
                 ('fifty_moving_avg', models.FloatField()),
                 ('two_hundred_moving_avg', models.FloatField()),
                 ('year_high', models.FloatField()),

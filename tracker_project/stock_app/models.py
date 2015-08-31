@@ -7,7 +7,7 @@ import json
 # Create your models here.
 class UserStock(models.Model):
     user = models.ForeignKey(User)
-    symbol = models.ForeignKey(Stock)
+    stock = models.ForeignKey(Stock)
     variation = models.FloatField()
     minutes = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
