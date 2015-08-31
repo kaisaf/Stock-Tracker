@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stock_app',
+    'stock_scraper',
 )
 
 MIDDLEWARE_CLASSES = (
