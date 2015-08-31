@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserStock
@@ -21,6 +22,8 @@ class HomeView(View):
         fig = plt.figure()
         for stock in stocks:
             stock_data = stock.get_info()
+            if not stock_data:
+                continue
             plt.plot(stock_data["prices"])
             symbols.append(stock.symbol)
             tmp = {
@@ -42,7 +45,10 @@ class HomeView(View):
         frm_variation_type = request.POST["variation_type"]
         frm_variation = request.POST["variation"]
         new_stock = UserStock(user=request.user, symbol=frm_symbol, variation=frm_variation, variation_type=frm_variation_type)
-        new_stock.save()
+        if not new_stock.get_min_by_min_data():
+            messages.add_message(request, messages.ERROR, 'Symbol not valid')
+        else:
+            new_stock.save()
         return redirect("home")
 
 class SignUpView(View):
@@ -55,6 +61,9 @@ class SignUpView(View):
         frm_username = request.POST["username"]
         frm_email = request.POST["email"]
         frm_password = request.POST["password"]
+        if frm_username == "" or frm_password == "":
+            context = {"error_message": "Username and Password are mandatory fields"}
+            return render(request, "stock_app/signup.html", context)
         user = User.objects.create_user(username=frm_username, email=frm_email, password=frm_password)
         user = authenticate(username=frm_username, password=frm_password)
         login(request, user)
@@ -70,8 +79,12 @@ class SignInView(View):
         frm_username = request.POST["username"]
         frm_password = request.POST["password"]
         user = authenticate(username=frm_username, password=frm_password)
-        login(request, user)
-        return redirect("home")
+        if user:
+            login(request, user)
+            return redirect("home")
+        else:
+            context = {"error_message": "Wrong username or password"}
+            return render(request, "stock_app/signin.html", context)
 
 class LogoutView(View):
     def get(self, request):

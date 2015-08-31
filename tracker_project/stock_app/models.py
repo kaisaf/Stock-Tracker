@@ -27,6 +27,8 @@ class UserStock(models.Model):
 
     def get_info(self):
         data = self.get_min_by_min_data()
+        if not data:
+            return None
         price_list = self.get_price_list(data)
         sliced_data = data[len(data)-10:]
         variations = self.check_alert(sliced_data)
@@ -45,11 +47,14 @@ class UserStock(models.Model):
     def get_min_by_min_data(self):
         url = "http://chartapi.finance.yahoo.com/instrument/1.0/{}/chartdata;type=quote;range=2d/json".format(self.symbol)
         server_answer = requests.get(url)
-        data = server_answer.text[server_answer.text.index('(')+1:]
-        data = data[:-2]
-        data = json.loads(data)
-        data = data["series"]
-        return data
+        if "errorid" in server_answer.text:
+            return None
+        else:
+            data = server_answer.text[server_answer.text.index('(')+1:]
+            data = data[:-2]
+            data = json.loads(data)
+            data = data["series"]
+            return data
 
     def get_price_list(self, data):
         price_list = []
@@ -71,16 +76,3 @@ class UserStock(models.Model):
             "VOL": vol_change
             }
         return variations
-
-
-
-"""
-from stock_app.models import UserStock
-from django.contrib.auth.models import User
-
-k = User.objects.get(username="kaisa")
-
-s = UserStock.objects.filter(user=k)
-data = s.get_info()
-
-"""

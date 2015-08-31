@@ -36,7 +36,6 @@
 
 
   <div class="container">
-    {% csrf_token %}
     <table class="table table-striped">
       <tr>
         <th>Symbol</th>
@@ -55,10 +54,22 @@
         </tr>
       {% endfor %}
     </table>
-
   </div>
 
+  <div class="form-group">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+
   <div class="container">
-    <img src="{% static "" %}stock_app/images/{{username}}.png" height="500px" />
+    {% if stocks %}
+      <img src="{% static "" %}stock_app/images/{{username}}.png" height="500px" />
+    {% endif %}
   </div>
 {% endblock %}
