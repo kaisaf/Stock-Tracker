@@ -18,3 +18,13 @@
     border-radius: 5%;
     padding: 10px;
 }
+
+.messages {
+    list-style-type: none;
+}
+
+.error {
+    font-size: 20px;
+    color: red;
+    text-decoration: none;
+}

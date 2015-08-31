@@ -33,7 +33,15 @@
     </form>
   </div>
 
-
+  <div class="error">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
 
   <div class="container">
     <table class="table table-striped">
@@ -54,16 +62,6 @@
         </tr>
       {% endfor %}
     </table>
-  </div>
-
-  <div class="error_messages">
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
   </div>
 
 
