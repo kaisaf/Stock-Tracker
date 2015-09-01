@@ -25,7 +25,7 @@ class UserStock(models.Model):
     variation_type = models.CharField(max_length=3, choices=VARIATION_TYPE_CHOICES)
 
     def __str__(self):
-        return "{} - {} - {} - {}".format(self.user, self.symbol, self.variation_type, self.variation)
+        return "{} - {} - {} - {}".format(self.user, self.stock, self.variation_type, self.variation)
     #
     # def get_info(self):
     #     data = self.get_min_by_min_data()
