@@ -1,0 +1,79 @@
+{% extends "stock_app/base.html" %}
+{% load staticfiles %}
+
+{% block menu_button %}
+  <li><a>{{username}}</a></li>
+  <li><a href="/logout">Logout</a></li>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <form class="form-inline" method="POST" id="form_add_stock">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="symbol">Symbol</label>
+        <input type="text" class="form-control" id="symbol" name="symbol" placeholder="AAPL" required>
+      </div>
+
+      <div class="form-group">
+        <label for="variation_type">Type</label>
+        <select class="form-control" id="variation_type" name="variation_type">
+          <option value="PCT">Percentage</option>
+          <option value="PR">Price</option>
+          <!-- <option value="VOL">Volume</option>
+          <option value="STD">Standard Deviation</option> -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="variation">Variation</label>
+        <input type="number" step="0.001" class="form-control" id="variation" name="variation" placeholder="6.66" required>
+      </div>
+
+      <div class="form-group">
+        <label for="minutes">Minutes</label>
+        <input type="number" class="form-control" id="minutes" name="minutes" placeholder="5" required>
+      </div>
+
+      <button type="submit" class="btn btn-default">Add</button>
+    </form>
+  </div>
+
+  <div class="error">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+
+  <div class="container">
+    <table class="table table-striped">
+      <tr>
+        <th>Symbol</th>
+        <th>Type</th>
+        <th>Variation</th>
+      </tr>
+      {% for stock in stocks %}
+        {% if stock.alert %}
+          <tr class="danger">
+        {% else %}
+          <tr>
+        {% endif %}
+          <td>{{ stock.symbol }}</td>
+          <td> {{ stock.variation_type}}</td>
+          <td> {{ stock.variation }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+
+  <div class="container">
+    {% if stocks %}
+      <img src="{% static "" %}stock_app/images/{{username}}.png" height="500px" />
+    {% endif %}
+  </div>
+{% endblock %}

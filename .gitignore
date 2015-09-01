@@ -1,3 +1,5 @@
+tracker_project/stock_scraper/twilio_settings.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -55,3 +57,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#db
+*.sqlite3

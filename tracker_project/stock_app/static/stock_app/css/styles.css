@@ -1,0 +1,30 @@
+.navbar-default .navbar-header a.navbar-brand:hover, .navbar-default .navbar-header a.navbar-brand:focus {
+   background-color: #A3DADA;
+   color: #999999;
+}
+
+.navbar-default li:hover, .navbar-default .navbar-collapse li:focus{
+   background-color: #A3DADA;
+}
+
+.container {
+    margin: 20px;
+}
+
+.thumbnail {
+    height: 220px;
+    border-style: none;
+    background-color: #DCDCDC;
+    border-radius: 5%;
+    padding: 10px;
+}
+
+.messages {
+    list-style-type: none;
+}
+
+.error {
+    font-size: 20px;
+    color: red;
+    text-decoration: none;
+}
