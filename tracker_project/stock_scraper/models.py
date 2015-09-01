@@ -73,12 +73,9 @@ class Stock(models.Model):
         return ",".join(price_list)
 
     def get_price_list(self):
-        print('converting price...')
         price_list = []
         price_str = self.twenty_four_hours_price_list.split(',')
-        print(price_str)
         for price in price_str:
-            print("PRICE = {}".format(price))
             price_list.append(float(price))
         return price_list
 

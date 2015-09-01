@@ -19,8 +19,6 @@ class HomeView(View):
     def get(self, request):
         context = {"username": request.user.username}
         user_stocks = UserStock.objects.filter(user=request.user)
-        print('AAAAAAAAA')
-        print(user_stocks)
         stocks_table = []
         symbols = []
         fig = plt.figure()
