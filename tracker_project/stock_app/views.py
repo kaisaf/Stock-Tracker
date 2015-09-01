@@ -19,18 +19,20 @@ class HomeView(View):
     def get(self, request):
         context = {"username": request.user.username}
         user_stocks = UserStock.objects.filter(user=request.user)
+        print('AAAAAAAAA')
+        print(user_stocks)
         stocks_table = []
         symbols = []
         fig = plt.figure()
         for user_stock in user_stocks:
-            stock_data = Stock.objects.get(id=user_stock.stock)
-            plt.plot(stock_data.get_price_list())
-            symbols.append(stock_data.symbol)
-            alert = stock_data.check_alert(user_stock.variation_type, user_stock.variation)
+#            stock_data = Stock.objects.get(id=user_stock.stock)
+            plt.plot(user_stock.stock.get_price_list())
+            symbols.append(user_stock.stock.symbol)
+            alert = user_stock.stock.check_alert(user_stock.variation_type, user_stock.variation)
 
             tmp = {
-                "id": stock_data.id,
-                "symbol": stock_data.symbol,
+                "id": user_stock.stock.id,
+                "symbol": user_stock.stock.symbol,
                 "variation_type": user_stock.variation_type,
                 "variation": user_stock.variation,
                 "alert": alert
@@ -47,18 +49,18 @@ class HomeView(View):
         frm_variation_type = request.POST["variation_type"]
         frm_variation = request.POST["variation"]
         frm_minutes = request.POST["minutes"]
-        if self.validate_stock_symbol(frm_symbol):
-            stock = Stock.objects.filter(symbol=frm_symbol).first()
-            if not stock:
-                stock = Stock(symbol=frm_symbol)
-                stock.refresh_yahoo_api_data()
-                stock.refresh_yahoo_intraday_data()
-                stock.refresh_plot()
-                stock.save()
-            new_stock = UserStock(user=request.user, stock=stock, variation=frm_variation, variation_type=frm_variation_type, minutes=frm_minutes)
-            new_stock.save()
-        else:
-            messages.add_message(request, messages.ERROR, 'Symbol not valid')
+#        if self.validate_stock_symbol(frm_symbol):
+        stock = Stock.objects.filter(symbol=frm_symbol).first()
+        if not stock:
+            stock = Stock(symbol=frm_symbol)
+            stock.refresh_yahoo_api_data()
+            stock.refresh_yahoo_intraday_data()
+            stock.refresh_plot()
+            stock.save()
+        new_stock = UserStock(user=request.user, stock=stock, variation=frm_variation, variation_type=frm_variation_type, minutes=frm_minutes)
+        new_stock.save()
+#        else:
+#            messages.add_message(request, messages.ERROR, 'Symbol not valid')
         return redirect("home")
 
     def validate_stock_symbol(self, symbol):

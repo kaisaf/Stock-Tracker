@@ -36,11 +36,11 @@ class Stock(models.Model):
             This method should NOT be called by the server's service running every minute,
             we do not want waste resources ploting graphics no one is seeing.
         """
-        fdir = "/stock_scraper/static/stock_scraper/tpm/imgs/"
-        fig = plt.figure()
-        plt.plot(self.get_price_list())
-        plt.legend(self.symbol)
-        plt.savefig("{}{}".format(fdir, self.symbol))
+        fdir = "/stock_scraper/static/stock_scraper/img/tmp/"
+#        fig = plt.figure()
+#        plt.plot(self.get_price_list())
+#        plt.legend(self.symbol)
+#        plt.savefig("{}{}".format(fdir, self.symbol))
         self.last_ploted_at = datetime.now()
 
     def refresh_yahoo_api_data(self):
@@ -66,16 +66,19 @@ class Stock(models.Model):
         return data
 
     def refresh_price_list(self, data):
-        price_list = ""
+        price_list = []
         for item in data:
             price = item["close"]
-            price_list += str(price)
-        return price_list
+            price_list.append(str(price))
+        return ",".join(price_list)
 
     def get_price_list(self):
+        print('converting price...')
         price_list = []
         price_str = self.twenty_four_hours_price_list.split(',')
+        print(price_str)
         for price in price_str:
+            print("PRICE = {}".format(price))
             price_list.append(float(price))
         return price_list
 
@@ -90,3 +93,12 @@ class Stock(models.Model):
             return variation > self.price_change_pct
         elif variation_type == "DOL":
             return variation > self.price_change_dol
+
+"""
+from stock_scraper.models import Stock
+
+t = Stock(symbol='TSLA')
+t.refresh_yahoo_api_data()
+t.refresh_yahoo_intraday_data()
+t.refresh_plot()
+"""
