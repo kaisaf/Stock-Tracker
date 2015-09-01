@@ -48,8 +48,6 @@ for user in users:
         message = client.messages.create(body=sms_txt,
             to="+13474255413",    # Replace with your phone number
             from_="+14155992671") # Replace with your Twilio number
-        print(message.sid)
-
 
 
 
