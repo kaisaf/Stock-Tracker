@@ -29,6 +29,12 @@
         <label for="variation">Variation</label>
         <input type="number" step="0.001" class="form-control" id="variation" name="variation" placeholder="6.66" required>
       </div>
+
+      <div class="form-group">
+        <label for="minutes">Minutes</label>
+        <input type="number" class="form-control" id="minutes" name="minutes" placeholder="5" required>
+      </div>
+
       <button type="submit" class="btn btn-default">Add</button>
     </form>
   </div>
@@ -51,7 +57,7 @@
         <th>Variation</th>
       </tr>
       {% for stock in stocks %}
-        {% if stock.alerts %}
+        {% if stock.alert %}
           <tr class="danger">
         {% else %}
           <tr>

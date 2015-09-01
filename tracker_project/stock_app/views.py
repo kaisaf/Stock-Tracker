@@ -4,7 +4,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserStock
+from stock_scraper.models import Stock
 import matplotlib.pyplot as plt
+import yahoo_finance
 
 
 class IndexView(View):
@@ -16,22 +18,22 @@ class IndexView(View):
 class HomeView(View):
     def get(self, request):
         context = {"username": request.user.username}
-        stocks = UserStock.objects.filter(user=request.user)
+        user_stocks = UserStock.objects.filter(user=request.user)
         stocks_table = []
         symbols = []
         fig = plt.figure()
-        for stock in stocks:
-            stock_data = stock.get_info()
-            if not stock_data:
-                continue
-            plt.plot(stock_data["prices"])
-            symbols.append(stock.symbol)
+        for user_stock in user_stocks:
+#            stock_data = Stock.objects.get(id=user_stock.stock)
+            plt.plot(user_stock.stock.get_price_list())
+            symbols.append(user_stock.stock.symbol)
+            alert = user_stock.stock.check_alert(user_stock.variation_type, user_stock.variation)
+
             tmp = {
-                "id": stock.id,
-                "symbol": stock.symbol,
-                "variation_type": stock.variation_type,
-                "variation": stock.variation,
-                "alerts": stock_data["alerts"]
+                "id": user_stock.stock.id,
+                "symbol": user_stock.stock.symbol,
+                "variation_type": user_stock.variation_type,
+                "variation": user_stock.variation,
+                "alert": alert
             }
             stocks_table.append(tmp)
         context["stocks"] = stocks_table
@@ -44,12 +46,26 @@ class HomeView(View):
         frm_symbol = request.POST["symbol"]
         frm_variation_type = request.POST["variation_type"]
         frm_variation = request.POST["variation"]
-        new_stock = UserStock(user=request.user, symbol=frm_symbol, variation=frm_variation, variation_type=frm_variation_type)
-        if not new_stock.get_min_by_min_data():
-            messages.add_message(request, messages.ERROR, 'Symbol not valid')
-        else:
-            new_stock.save()
+        frm_minutes = request.POST["minutes"]
+#        if self.validate_stock_symbol(frm_symbol):
+        stock = Stock.objects.filter(symbol=frm_symbol).first()
+        if not stock:
+            stock = Stock(symbol=frm_symbol)
+            stock.refresh_yahoo_api_data()
+            stock.refresh_yahoo_intraday_data()
+            stock.refresh_plot()
+            stock.save()
+        new_stock = UserStock(user=request.user, stock=stock, variation=frm_variation, variation_type=frm_variation_type, minutes=frm_minutes)
+        new_stock.save()
+#        else:
+#            messages.add_message(request, messages.ERROR, 'Symbol not valid')
         return redirect("home")
+
+    def validate_stock_symbol(self, symbol):
+        share = yahoo_finance.Share(symbol)
+        if len(share.get_info()) > 1:
+            return True
+        return False
 
 class SignUpView(View):
     def get(self, request):
@@ -59,9 +75,9 @@ class SignUpView(View):
 
     def post(self, request):
         frm_username = request.POST["username"]
-        if User.objects.get(username=frm_username):
-            context = {"error_message": "Username must be unique"}
-            return render(request, "stock_app/signup.html", context)
+        # if User.objects.get(username=frm_username):
+        #     context = {"error_message": "Username must be unique"}
+        #     return render(request, "stock_app/signup.html", context)
         frm_email = request.POST["email"]
         frm_password = request.POST["password"]
         user = User.objects.create_user(username=frm_username, email=frm_email, password=frm_password)
