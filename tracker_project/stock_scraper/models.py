@@ -25,7 +25,7 @@ class Stock(models.Model):
         return "{} - 50days avg: {} - price change: {} - percent_change: {}".format(self.symbol, self.fifty_moving_avg, self.price_change_dol, self.price_change_pct)
 
     def refresh(self):
-        """ Refresh instance data with if it is older than 60 seconds """
+        """ Refresh instance data if it is older than 60 seconds """
         if (datetime.now() - self.updated_at()) > 60:
             self.refresh_yahoo_api_data()
             self.refresh_yahoo_intraday_data()
@@ -34,7 +34,7 @@ class Stock(models.Model):
         """ This method should be called by the view to update the graphic ploted if self.last_ploted_at
             passed a given time.
             This method should NOT be called by the server's service running every minute,
-            we do not want waste resources ploting graphics no one is seeing.
+            we do not want to waste resources ploting graphics no one is seeing.
         """
         fdir = "/stock_scraper/static/stock_scraper/img/tmp/"
 #        fig = plt.figure()
