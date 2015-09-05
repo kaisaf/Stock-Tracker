@@ -23,8 +23,9 @@ class HomeView(View):
         symbols = []
         fig = plt.figure()
         for user_stock in user_stocks:
-            plt.plot(user_stock.stock.get_price_list())
             symbols.append(user_stock.stock.symbol)
+            user_stock.stock.refresh_yahoo_intraday_data()
+            plt.plot(user_stock.stock.get_price_list())
             alert = user_stock.stock.check_alert(user_stock.variation_type, user_stock.variation)
             tmp = {
                 "id": user_stock.stock.id,
@@ -47,7 +48,6 @@ class HomeView(View):
         frm_variation = request.POST["variation"]
         frm_minutes = request.POST["minutes"]
 
-        print(self.validate_stock_symbol(frm_symbol))
         if self.validate_stock_symbol(frm_symbol):
             stock = Stock.objects.filter(symbol=frm_symbol).first()
             if not stock:

@@ -82,14 +82,16 @@ class Stock(models.Model):
     def calculate_variations(self, data):
         newest = data[-1]
         oldest = data[0]
-        self.price_change_pct = ((newest["close"] - oldest["close"])/oldest["close"]) * 100
-        self.price_change_dol = newest["close"] - oldest["close"]
+        self.price_change_pct = abs(((newest["close"] - oldest["close"])/oldest["close"]) * 100)
+        print(abs(self.price_change_pct))
+        self.price_change_dol = abs(newest["close"] - oldest["close"])
+        print(abs(self.price_change_dol))
 
     def check_alert(self, variation_type, variation):
         if variation_type == "PCT":
-            return variation > self.price_change_pct
+            return variation < self.price_change_pct
         elif variation_type == "DOL":
-            return variation > self.price_change_dol
+            return variation < self.price_change_dol
 
 """
 from stock_scraper.models import Stock
