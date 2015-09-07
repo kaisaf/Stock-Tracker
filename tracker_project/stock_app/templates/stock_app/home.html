@@ -56,6 +56,7 @@
         <th>Type</th>
         <th>Variation</th>
         <th>Minutes</th>
+        <th>Delete</th>
       </tr>
       {% for stock in stocks %}
         {% if stock.alert %}
@@ -67,6 +68,7 @@
           <td> {{ stock.variation_type}}</td>
           <td> {{ stock.variation }}</td>
           <td> {{ stock.minutes }}</td>
+          <td><button type="submit" class="delete_row">Delete</button></td>
         </tr>
       {% endfor %}
     </table>

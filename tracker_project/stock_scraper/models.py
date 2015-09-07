@@ -83,9 +83,7 @@ class Stock(models.Model):
         newest = data[-1]
         oldest = data[0]
         self.price_change_pct = abs(((newest["close"] - oldest["close"])/oldest["close"]) * 100)
-        print(abs(self.price_change_pct))
         self.price_change_dol = abs(newest["close"] - oldest["close"])
-        print(abs(self.price_change_dol))
 
     def check_alert(self, variation_type, variation):
         if variation_type == "PCT":

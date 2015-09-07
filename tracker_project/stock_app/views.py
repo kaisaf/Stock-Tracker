@@ -24,7 +24,7 @@ class HomeView(View):
         fig = plt.figure()
         for user_stock in user_stocks:
             symbols.append(user_stock.stock.symbol)
-            user_stock.stock.refresh_yahoo_intraday_data()
+            #user_stock.stock.refresh_yahoo_intraday_data()
             plt.plot(user_stock.stock.get_price_list())
             alert = user_stock.stock.check_alert(user_stock.variation_type, user_stock.variation)
             tmp = {
