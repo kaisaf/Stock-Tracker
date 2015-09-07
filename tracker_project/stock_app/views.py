@@ -69,6 +69,23 @@ class HomeView(View):
             return True
         return False
 
+
+class DeleteView(View):
+    def post(self, request):
+        print(request.POST)
+        #stock_id = request.POST['id']
+        print(stock_id)
+        try:
+            user_stock = UserStock.objects.get(id=stock_id)
+            user_stock.delete()
+        except Exception as e:
+            print("didnt work")
+        #user_stock.delete()
+        print("userstock deleted?")
+        #return JsonResponse({"completed":"done"})
+
+
+
 class SignUpView(View):
     def get(self, request):
         if request.user.is_authenticated():

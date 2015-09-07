@@ -51,6 +51,7 @@
 
   <div class="container">
     <table class="table table-striped">
+
       <tr>
         <th>Symbol</th>
         <th>Type</th>
@@ -58,6 +59,7 @@
         <th>Minutes</th>
         <th>Delete</th>
       </tr>
+
       {% for stock in stocks %}
         {% if stock.alert %}
           <tr class="danger">
@@ -68,7 +70,8 @@
           <td> {{ stock.variation_type}}</td>
           <td> {{ stock.variation }}</td>
           <td> {{ stock.minutes }}</td>
-          <td><button type="submit" class="delete_row">Delete</button></td>
+          <td>
+            <button type="submit" class="delete_row" data-id={{stock.id}}>Delete</button></td>
         </tr>
       {% endfor %}
     </table>
