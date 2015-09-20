@@ -26,8 +26,11 @@ class HomeView(View):
             symbols.append(user_stock.stock.symbol)
             #user_stock.stock.refresh_yahoo_intraday_data()
             plt.plot(user_stock.stock.get_price_list())
-            alert = user_stock.stock.check_alert(user_stock.variation_type, user_stock.variation)
+            # Alert checking needs to be done in user_stock side, since trackers
+            # can be different for the same stock
+            alert = user_stock.check_alert(user_stock)
             tmp = {
+                "user_stock_id": user_stock.id,
                 "id": user_stock.stock.id,
                 "symbol": user_stock.stock.symbol,
                 "variation_type": user_stock.variation_type,
@@ -72,18 +75,15 @@ class HomeView(View):
 
 class DeleteView(View):
     def post(self, request):
-        print(request.POST)
-        #stock_id = request.POST['id']
+        stock_id = request.POST['id']
         print(stock_id)
         try:
             user_stock = UserStock.objects.get(id=stock_id)
+            print(user_stock)
             user_stock.delete()
         except Exception as e:
             print("didnt work")
-        #user_stock.delete()
-        print("userstock deleted?")
-        #return JsonResponse({"completed":"done"})
-
+        return JsonResponse({"completed":"done"})
 
 
 class SignUpView(View):

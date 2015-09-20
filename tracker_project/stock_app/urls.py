@@ -16,13 +16,15 @@ Including another URLconf
 from django.conf.urls import include, url
 from .views import HomeView, IndexView, SignUpView, SignInView, LogoutView, DeleteView
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
-    url(r'^home/', login_required(HomeView.as_view()), name='home'),
-    url(r'^signup/', SignUpView.as_view(), name='signup'),
-    url(r'^signin/', SignInView.as_view(), name='signin'),
-    url(r'^logout/', LogoutView.as_view(), name='logout'),
-    url(r'^home/delete/', DeleteView.as_view(), name='delete'),
+    url(r'^home/$', login_required(HomeView.as_view()), name='home'),
+    url(r'^signup/$', SignUpView.as_view(), name='signup'),
+    url(r'^signin/$', SignInView.as_view(), name='signin'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
+    url(r'^home/delete/$', csrf_exempt(DeleteView.as_view()), name='delete'),
 
 ]

@@ -55,7 +55,6 @@ class Stock(models.Model):
         self.twenty_four_hours_price_list = self.refresh_price_list(intraday)
         self.calculate_variations(intraday)
 
-
     def get_intraday_data(self):
         url = "http://chartapi.finance.yahoo.com/instrument/1.0/{}/chartdata;type=quote;range=1d/json".format(self.symbol)
         server_answer = requests.get(url)
@@ -79,17 +78,6 @@ class Stock(models.Model):
             price_list.append(float(price))
         return price_list
 
-    def calculate_variations(self, data):
-        newest = data[-1]
-        oldest = data[0]
-        self.price_change_pct = abs(((newest["close"] - oldest["close"])/oldest["close"]) * 100)
-        self.price_change_dol = abs(newest["close"] - oldest["close"])
-
-    def check_alert(self, variation_type, variation):
-        if variation_type == "PCT":
-            return variation < self.price_change_pct
-        elif variation_type == "DOL":
-            return variation < self.price_change_dol
 
 """
 from stock_scraper.models import Stock
